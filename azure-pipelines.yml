@@ -144,7 +144,7 @@ stages:
                 $file = Get-Content "d:\a\1\s\GeneratedOutputFiles\$(databasename)_Script.sql"
                 $containsWord = $file | %{$_ -match "CREATE" -or $_ -match "ALTER TABLE" -or $_ -match "DROP"}
                 Write-Host $containsWord
-                if ($containsWord -contains $true) {
+                
                   Write-Host "Installing tool"
                   Install-Module VSTeam -Scope CurrentUser -Force
                   Set-VSTeamAccount –Account $(Acct) -PersonalAccessToken $(PAT)
@@ -156,7 +156,7 @@ stages:
                   $vg.variables | Get-Member -MemberType *Property | %{$vars.($_.Name) = $vg.variables.($_.Name)}
                   $varName = "schemaChanged"
                   $vars.$varName= @{}
-                  $vars.$varName.value = "True"
+                  $vars.$varName.value = containsWord -contains $true
                   $vars.$varName.isSecret = $false
                   $methodParameters = @{
                     id = $vg.id
@@ -165,7 +165,7 @@ stages:
                     Description = ""
                     Type = "Vsts"
                     Variables = $vars}
-                  Update-VSTeamVariableGroup @methodParameters} 
+                  Update-VSTeamVariableGroup @methodParameters
 
 - stage: DBAVerificationApply
   variables: 
