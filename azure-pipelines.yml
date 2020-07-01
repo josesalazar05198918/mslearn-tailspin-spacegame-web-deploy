@@ -144,7 +144,8 @@ stages:
                 $file = Get-Content "d:\a\1\s\GeneratedOutputFiles\$(databasename)_Script.sql"
                 $containsWord = $file | %{$_ -match "CREATE" -or $_ -match "ALTER" -or $_ -match "DROP"}
                 
-                if ($true) {
+                if ($containsWord -contains $true) {
+                  Write-Host "Installing VSTeam Moudle"
                   Install-Module VSTeam -Scope CurrentUser -Force
                   Set-VSTeamAccount –Account $(Acct) -PersonalAccessToken $(PAT)
                   $methodParameters = @{
