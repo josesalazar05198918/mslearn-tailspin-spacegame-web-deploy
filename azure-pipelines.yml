@@ -145,6 +145,7 @@ stages:
                 $containsWord = $file | %{$_ -match "CREATE" -or $_ -match "ALTER TABLE" -or $_ -match "DROP"}
                 Write-Host $containsWord
                 if ($containsWord -contains $true) {
+                  Write-Host "Installing tool"
                   Install-Module VSTeam -Scope CurrentUser -Force
                   Set-VSTeamAccount –Account $(Acct) -PersonalAccessToken $(PAT)
                   $methodParameters = @{
